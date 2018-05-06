@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
+  high: 5
 --- !u!136 &136794508831258208
 CapsuleCollider:
   m_ObjectHideFlags: 1
