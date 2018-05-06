@@ -341,6 +341,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114311309505672838, guid: 1021780c70bb78d46a4fb14bddad5071,
+        type: 2}
+      propertyPath: m_PlayerPrefab
+      value: 
+      objectReference: {fileID: 1611005383451646, guid: 0ba6809335c7129489cbe90eb90927e9,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1021780c70bb78d46a4fb14bddad5071, type: 2}
   m_IsPrefabParent: 0
@@ -354,7 +360,7 @@ GameObject:
   - component: {fileID: 2017833600}
   m_Layer: 0
   m_Name: SpawnLocation
-  m_TagString: Untagged
+  m_TagString: SpawnLocation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
