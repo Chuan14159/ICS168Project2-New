@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class PlayerControl : NetworkBehaviour {
 
     // Use this for initialization
+#region Attributes
     public float _speed;
     public float high;
     private readonly float Max_X = 6;
@@ -13,8 +14,12 @@ public class PlayerControl : NetworkBehaviour {
     private float Horizontal;
     private GameObject spawnLocation;
     private List<GameObject> Feet;
+    private bool[] doubleJump = new bool[] { false, true };
+    private int doubleJumpIndex = 0;
+    #endregion
 
-	void Awake () {
+#region Functions
+    void Awake () {
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
@@ -31,6 +36,25 @@ public class PlayerControl : NetworkBehaviour {
         Move();
 	}
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        GameObject ground = collision.transform.gameObject;
+        if (ground.tag == "Ground" && !Feet.Contains(ground))
+            Feet.Add(ground);
+        ResetDoubleJump();
+        Debug.Log("Enter" + Feet.Count);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        GameObject ground = collision.transform.gameObject;
+        if (ground.tag == "Ground" && Feet.Contains(ground))
+            Feet.Remove(ground);
+        Debug.Log("Exit" + Feet.Count);
+    }
+    #endregion
+
+#region Methods
     private void Move()
     {
         Horizontal += Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
@@ -42,25 +66,23 @@ public class PlayerControl : NetworkBehaviour {
 
     private void Jump()
     {
-        if(Feet.Count > 0)
+        if (Feet.Count > 0 && !doubleJump[doubleJumpIndex])
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * high,ForceMode.Impulse);
+             GetComponent<Rigidbody>().AddForce(Vector3.up * high, ForceMode.Impulse);
+             doubleJump[doubleJumpIndex++] = true;
+        }
+        else if(doubleJumpIndex < doubleJump.Length && doubleJump[doubleJumpIndex])
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * high, ForceMode.Impulse);
+            doubleJumpIndex++;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void ResetDoubleJump()
     {
-        GameObject ground = collision.transform.gameObject;
-        if (ground.tag == "Ground" && !Feet.Contains(ground))
-            Feet.Add(ground);
-        Debug.Log("Enter" + Feet.Count);
+        doubleJump[0] = false;
+        doubleJump[1] = true;
+        doubleJumpIndex = 0;
     }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        GameObject ground = collision.transform.gameObject;
-        if (ground.tag == "Ground" && Feet.Contains(ground))
-            Feet.Remove(ground);
-        Debug.Log("Exit" + Feet.Count);
-    }
+#endregion
 }
