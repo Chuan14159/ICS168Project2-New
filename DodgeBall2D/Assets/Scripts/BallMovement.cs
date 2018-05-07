@@ -9,7 +9,10 @@ public class BallMovement : NetworkBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-
+        if (isServer)
+        {
+            NetworkServer.Spawn(gameObject);
+        }
 	}
 
 

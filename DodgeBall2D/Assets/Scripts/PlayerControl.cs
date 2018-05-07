@@ -16,9 +16,9 @@ public class PlayerControl : NetworkBehaviour {
     private List<GameObject> Feet;
     private bool[] doubleJump = new bool[] { false, true };
     private int doubleJumpIndex = 0;
-    #endregion
+#endregion
 
-#region Functions
+#region Event Functions
     void Awake () {
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
@@ -36,7 +36,7 @@ public class PlayerControl : NetworkBehaviour {
         Move();
 	}
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject ground = collision.transform.gameObject;
         if (ground.tag == "Ground" && !Feet.Contains(ground))
@@ -45,14 +45,14 @@ public class PlayerControl : NetworkBehaviour {
         Debug.Log("Enter" + Feet.Count);
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         GameObject ground = collision.transform.gameObject;
         if (ground.tag == "Ground" && Feet.Contains(ground))
             Feet.Remove(ground);
         Debug.Log("Exit" + Feet.Count);
     }
-    #endregion
+#endregion
 
 #region Methods
     private void Move()
@@ -61,19 +61,19 @@ public class PlayerControl : NetworkBehaviour {
         Horizontal = Mathf.Clamp(Horizontal,Min_X,Max_X);
 
         Vector3 newPosition = new Vector3(Horizontal, transform.position.y, 0);
-        GetComponent<Rigidbody>().MovePosition(newPosition);
+        GetComponent<Rigidbody2D>().MovePosition(newPosition);
     }
 
     private void Jump()
     {
         if (Feet.Count > 0 && !doubleJump[doubleJumpIndex])
         {
-             GetComponent<Rigidbody>().AddForce(Vector3.up * high, ForceMode.Impulse);
+             GetComponent<Rigidbody2D>().AddForce(Vector3.up * high, ForceMode2D.Impulse);
              doubleJump[doubleJumpIndex++] = true;
         }
         else if(doubleJumpIndex < doubleJump.Length && doubleJump[doubleJumpIndex])
         {
-            GetComponent<Rigidbody>().AddForce(Vector3.up * high, ForceMode.Impulse);
+            GetComponent<Rigidbody2D>().AddForce(Vector3.up * high, ForceMode2D.Impulse);
             doubleJumpIndex++;
         }
     }
