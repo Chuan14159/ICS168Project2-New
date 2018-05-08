@@ -8,8 +8,8 @@ public class PlayerControl : NetworkBehaviour {
 #region Attributes
     public float _speed;
     public float high;
-    private readonly float Max_X = 6;
-    private readonly float Min_X = -6;
+
+    private Rigidbody2D _rigidbody;
 
     private float Horizontal;
     private GameObject spawnLocation;
@@ -20,14 +20,15 @@ public class PlayerControl : NetworkBehaviour {
 
 #region Event Functions
     void Awake () {
+        _rigidbody = GetComponent<Rigidbody2D>();
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
         Feet = new List<GameObject>();
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    // Update is called once per frame
+    void FixedUpdate () {
         if (!isLocalPlayer)
             return;
 
@@ -39,6 +40,9 @@ public class PlayerControl : NetworkBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!isLocalPlayer)
+            return;
+
         GameObject ground = collision.transform.gameObject;
         if (ground.tag == "Ground" && !Feet.Contains(ground))
             Feet.Add(ground);
@@ -48,6 +52,9 @@ public class PlayerControl : NetworkBehaviour {
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        if (!isLocalPlayer)
+            return;
+
         GameObject ground = collision.transform.gameObject;
         if (ground.tag == "Ground" && Feet.Contains(ground))
             Feet.Remove(ground);
@@ -59,20 +66,19 @@ public class PlayerControl : NetworkBehaviour {
     private void Move()
     {
         Horizontal = Input.GetAxis("Horizontal") * _speed;
-        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(Horizontal,Min_X,Max_X), GetComponent<Rigidbody2D>().velocity.y);
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x,Min_X,Max_X),transform.position.y,0);
+        _rigidbody.velocity = new Vector2(Horizontal, _rigidbody.velocity.y);
     }
 
     private void Jump()
     {
         if (Feet.Count > 0 && doubleJumpIndex < doubleJump.Length && !doubleJump[doubleJumpIndex])
         {
-             GetComponent<Rigidbody2D>().AddForce(Vector3.up * high, ForceMode2D.Impulse);
-             doubleJump[doubleJumpIndex++] = true;
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, high);
+            doubleJump[doubleJumpIndex++] = true;
         }
         else if(doubleJumpIndex < doubleJump.Length && doubleJump[doubleJumpIndex])
         {
-            GetComponent<Rigidbody2D>().AddForce(Vector3.up * high, ForceMode2D.Impulse);
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, high);
             doubleJumpIndex++;
         }
     }
