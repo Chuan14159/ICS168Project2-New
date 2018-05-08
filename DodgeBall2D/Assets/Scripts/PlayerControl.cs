@@ -58,12 +58,8 @@ public class PlayerControl : NetworkBehaviour {
 #region Methods
     private void Move()
     {
-        if(Input.GetKey(KeyCode.A))
-            Horizontal = -1;
-        else if(Input.GetKey(KeyCode.D))
-            Horizontal = 1;
-        Vector3 Force = new Vector3(Horizontal,0,0) * _speed;
-        GetComponent<Rigidbody2D>().AddForce(Force,ForceMode2D.Force);
+        Horizontal = Input.GetAxis("Horizontal") * _speed;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Clamp(Horizontal,Min_X,Max_X), GetComponent<Rigidbody2D>().velocity.y);
         transform.position = new Vector3(Mathf.Clamp(transform.position.x,Min_X,Max_X),transform.position.y,0);
     }
 
