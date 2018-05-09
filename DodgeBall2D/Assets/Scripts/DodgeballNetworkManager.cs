@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class DodgeballNetworkManager : NetworkManager {
     #region Attributes
     [SerializeField]
-    private List<GameObject> balls; // The balls to spawn
+    private List<GameObject> balls;     // The balls to spawn
     #endregion
 
     #region Properties

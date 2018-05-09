@@ -10,7 +10,10 @@ public class PlayerControl : NetworkBehaviour {
     public float high;
 
     private Rigidbody2D _rigidbody;
+    private SpriteRenderer _spriteRenderer;
 
+    [SyncVar(hook = "OnTeamChange")]
+    private int team = -1;
     private float Horizontal;
     private GameObject spawnLocation;
     private List<GameObject> Feet;
@@ -20,15 +23,27 @@ public class PlayerControl : NetworkBehaviour {
 
 #region Event Functions
     void Awake () {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public override void OnStartLocalPlayer ()
+    {
         _rigidbody = GetComponent<Rigidbody2D>();
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
         Feet = new List<GameObject>();
+        GiveChoice();
+    }
+
+    public override void OnStartClient ()
+    {
+        AssignColor();
     }
 
     // Update is called once per frame
     void FixedUpdate () {
+        Debug.Log(team);
         if (!isLocalPlayer)
             return;
 
@@ -88,6 +103,57 @@ public class PlayerControl : NetworkBehaviour {
         doubleJump[0] = false;
         doubleJump[1] = true;
         doubleJumpIndex = 0;
+    }
+
+    public void GiveChoice ()
+    {
+        GameController.instance.teamSelectionUI.SetActive(true);
+        TeamSelection.instance.Player = this;
+    }
+
+    public void AssignColor ()
+    {
+        gameObject.layer = team + 8;
+        switch (team)
+        {
+            case 0:
+                _spriteRenderer.color = Color.red;
+                break;
+            case 1:
+                _spriteRenderer.color = Color.blue;
+                break;
+        }
+    }
+
+    [Command]
+    public void CmdChooseTeam (int value)
+    {
+        team = value;
+        gameObject.layer = value + 8;
+        switch (value)
+        {
+            case 0:
+                _spriteRenderer.color = Color.red;
+                break;
+            case 1:
+                _spriteRenderer.color = Color.blue;
+                break;
+        }
+    }
+
+    public void OnTeamChange (int value)
+    {
+        team = value;
+        gameObject.layer = value + 8;
+        switch (value)
+        {
+            case 0:
+                _spriteRenderer.color = Color.red;
+                break;
+            case 1:
+                _spriteRenderer.color = Color.blue;
+                break;
+        }
     }
 #endregion
 }
