@@ -11,6 +11,7 @@ public class PlayerControl : NetworkBehaviour {
 
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _spriteRenderer;
+    private PlayerTrigger _Trigger;
 
     [SyncVar(hook = "OnTeamChange")]
     private int team = -1;
@@ -24,6 +25,8 @@ public class PlayerControl : NetworkBehaviour {
 #region Event Functions
     void Awake () {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _Trigger = GetComponent<PlayerTrigger>();
+        Ball = null;
     }
 
     public override void OnStartLocalPlayer ()
@@ -46,6 +49,13 @@ public class PlayerControl : NetworkBehaviour {
         Debug.Log(team);
         if (!isLocalPlayer)
             return;
+        if(Input.GetKeyDown(KeyCode.F))
+        { 
+            if(_Trigger.GetBall() != null)
+            {
+
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
