@@ -26,7 +26,6 @@ public class PlayerControl : NetworkBehaviour {
     void Awake () {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _Trigger = GetComponent<PlayerTrigger>();
-        Ball = null;
     }
 
     public override void OnStartLocalPlayer ()
