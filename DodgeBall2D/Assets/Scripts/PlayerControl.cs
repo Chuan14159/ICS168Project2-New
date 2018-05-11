@@ -8,6 +8,7 @@ public class PlayerControl : NetworkBehaviour {
 #region Attributes
     public float _speed;
     public float high;
+    public float magnitude;
 
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _spriteRenderer;
@@ -20,12 +21,18 @@ public class PlayerControl : NetworkBehaviour {
     private List<GameObject> Feet;
     private bool[] doubleJump = new bool[] { false, true };
     private int doubleJumpIndex = 0;
+    private GameObject held;
+    private Vector3 heldPosition;
+    private bool FaceLeft;
+    private bool isPickingBall;
 #endregion
 
 #region Event Functions
     void Awake () {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _Trigger = GetComponent<PlayerTrigger>();
+        _Trigger = GetComponentInChildren<PlayerTrigger>();
+        FaceLeft = false;
+        isPickingBall = false;
     }
 
     public override void OnStartLocalPlayer ()
@@ -45,19 +52,31 @@ public class PlayerControl : NetworkBehaviour {
 
     // Update is called once per frame
     void FixedUpdate () {
+        /*Local Player*/
         if (!isLocalPlayer)
             return;
-        if(Input.GetKeyDown(KeyCode.F))
-        { 
-            if(_Trigger.GetBall() != null)
-            {
 
-            }
-        }
+        /*Pick up Ball*/
+        if (Input.GetKeyDown(KeyCode.F))
+            PickUpBall();
 
+        /*holding Ball*/
+        if (held != null)
+            HoldBall();
+
+        /*Jump*/
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
+
+        if (Input.GetMouseButtonDown(0) && isPickingBall)
+            held = ThrowBall();
+
+        /*Player Movement*/
         Move();
+        if (FaceLeft)
+            heldPosition = transform.position + new Vector3(-0.5f, 0);
+        else
+            heldPosition = transform.position + new Vector3(0.5f, 0);
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -87,6 +106,10 @@ public class PlayerControl : NetworkBehaviour {
     {
         Horizontal = Input.GetAxis("Horizontal") * _speed;
         _rigidbody.velocity = new Vector2(Horizontal, _rigidbody.velocity.y);
+        if (Horizontal > 0)
+            FaceLeft = false;
+        if (Horizontal < 0)
+            FaceLeft = true;
     }
 
     private void Jump()
@@ -135,6 +158,29 @@ public class PlayerControl : NetworkBehaviour {
     public void CmdChooseTeam (int value)
     {
         AssignTeam(value);
+    }
+
+    private void HoldBall()
+    {
+        held.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        held.transform.position = heldPosition;
+    }
+
+    private void PickUpBall()
+    {
+        isPickingBall = !isPickingBall;
+        if (isPickingBall)
+            held = _Trigger.GetBall();
+        else held = null;
+    }
+    private GameObject ThrowBall()
+    {
+         Vector2 MouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+         Vector2 direction = MouseInput - (Vector2)held.transform.position;
+         direction.Normalize();
+         held.GetComponent<Rigidbody2D>().velocity = direction * magnitude;
+         isPickingBall = !isPickingBall;
+         return null;
     }
 #endregion
 }

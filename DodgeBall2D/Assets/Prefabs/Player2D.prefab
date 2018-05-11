@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 8
   high: 6
+  magnitude: 40
 --- !u!114 &114256414381902566
 MonoBehaviour:
   m_ObjectHideFlags: 1

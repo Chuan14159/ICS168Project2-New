@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SpawnLocation
   - Ground
+  - Ball
   layers:
   - Default
   - TransparentFX
