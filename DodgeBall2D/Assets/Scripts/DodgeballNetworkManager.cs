@@ -8,7 +8,7 @@ public class DodgeballNetworkManager : NetworkManager {
     [SerializeField]
     private List<GameObject> balls;     // The balls to spawn
     [SerializeField]
-    private GameObject timer;                // The timer
+    private GameObject gameInfo;        // All of the game's numbers         
     #endregion
 
     #region Properties
@@ -27,7 +27,8 @@ public class DodgeballNetworkManager : NetworkManager {
         base.OnServerAddPlayer(conn, playerControllerId);
         if (numPlayers >= matchSize)
         {
-            timer.GetComponent<Timer>().StartTimer(300);
+            gameInfo.GetComponent<Timer>().StartTimer(300);
+            gameInfo.GetComponent<Scoreboard>().ResetScores();
         }
     }
 
@@ -62,7 +63,7 @@ public class DodgeballNetworkManager : NetworkManager {
             GameObject l = Instantiate(g, new Vector3(-pos, 4), Quaternion.identity);
             NetworkServer.Spawn(l);
         }
-        NetworkServer.Spawn(timer);
+        //NetworkServer.Spawn(timer);
     }
 	#endregion
 	

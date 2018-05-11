@@ -8,16 +8,15 @@ public class BallMovement : NetworkBehaviour {
     private GameObject SpawnLocation; 
 
 	// Use this for initialization
-	void Awake () {
-        if (isServer)
-        {
-            NetworkServer.Spawn(gameObject);
-        }
+	void Awake ()
+    {
+
 	}
 
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
 		
 	}
 }

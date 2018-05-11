@@ -7,18 +7,25 @@ using UnityEngine.Networking;
 public class Timer : NetworkBehaviour {
     #region Attributes
     [SerializeField]
-    private Text text;          // The text to show the time
-    private Coroutine routine;  // The current timer routine
+    private Text text;              // The text to show the time
+    private Coroutine routine;      // The current timer routine
     [SyncVar(hook = "SetSeconds")]
-    private int seconds;        // The time left in seconds
+    private int seconds;            // The time left in seconds
     #endregion
 
     #region Properties
-	#endregion
 
-	#region Event Functions
-	// Awake is called before Start
-	private void Awake ()
+    #endregion
+
+    #region Event Functions
+    public override void OnStartClient ()
+    {
+        base.OnStartClient();
+        SetSeconds(seconds);
+    }
+
+    // Awake is called before Start
+    private void Awake ()
 	{
 		
 	}
