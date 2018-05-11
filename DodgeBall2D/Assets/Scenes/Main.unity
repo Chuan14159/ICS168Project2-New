@@ -210,26 +210,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 224170003486107456, guid: 99cc9ba45669eb048aa7e30b21260b35,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224170003486107456, guid: 99cc9ba45669eb048aa7e30b21260b35,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224170003486107456, guid: 99cc9ba45669eb048aa7e30b21260b35,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224170003486107456, guid: 99cc9ba45669eb048aa7e30b21260b35,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 99cc9ba45669eb048aa7e30b21260b35, type: 2}
   m_IsPrefabParent: 0
@@ -458,7 +438,6 @@ MonoBehaviour:
   m_SpawnPrefabs:
   - {fileID: 1056231605002408, guid: b0aca607c56aac346b447aa28e9e9d2f, type: 2}
   - {fileID: 1165868548797250, guid: 0a1058245a41be84999ef7f24ae8ba4a, type: 2}
-  - {fileID: 1088422378485880, guid: 99cc9ba45669eb048aa7e30b21260b35, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -518,7 +497,7 @@ MonoBehaviour:
   - {fileID: 1165868548797250, guid: 0a1058245a41be84999ef7f24ae8ba4a, type: 2}
   - {fileID: 1165868548797250, guid: 0a1058245a41be84999ef7f24ae8ba4a, type: 2}
   - {fileID: 1165868548797250, guid: 0a1058245a41be84999ef7f24ae8ba4a, type: 2}
-  timer: {fileID: 889109301}
+  gameInfo: {fileID: 889109301}
 --- !u!4 &1258302182
 Transform:
   m_ObjectHideFlags: 0

@@ -6,16 +6,17 @@ using UnityEngine.Networking;
 
 public class Scoreboard : NetworkBehaviour {
     #region Attributes
+    public static Scoreboard instance;  // The instance to reference
     [SerializeField]
-    private int scoreLimit;         // The max score before winning
+    private int scoreLimit;             // The max score before winning
     [SerializeField]
-    private Text scoreDisplay1;     // The score1 display
+    private Text scoreDisplay1;         // The score1 display
     [SerializeField]
-    private Text scoreDisplay2;     // The score2 display
+    private Text scoreDisplay2;         // The score2 display
     [SyncVar(hook = "SetScore1")]
-    private int score1;             // The first score
+    private int score1;                 // The first score
     [SyncVar(hook = "SetScore2")]
-    private int score2;             // The second score
+    private int score2;                 // The second score
     #endregion
 
     #region Properties
@@ -58,7 +59,14 @@ public class Scoreboard : NetworkBehaviour {
     // Awake is called before Start
     private void Awake ()
 	{
-		
+		if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
 	}
 
 	// Use this for initialization

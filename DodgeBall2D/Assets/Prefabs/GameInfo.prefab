@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreLimit: 0
-  scoreDisplay1: {fileID: 0}
-  scoreDisplay2: {fileID: 0}
+  scoreDisplay1: {fileID: 114636785025092150}
+  scoreDisplay2: {fileID: 114310548903428502}
 --- !u!114 &114310548903428502
 MonoBehaviour:
   m_ObjectHideFlags: 1

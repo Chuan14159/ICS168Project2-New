@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 public class PlayerControl : NetworkBehaviour {
 
     // Use this for initialization
-#region Attributes
+    #region Attributes
     public float _speed;
     public float high;
     public float magnitude;
@@ -15,7 +15,7 @@ public class PlayerControl : NetworkBehaviour {
     private PlayerTrigger _Trigger;
 
     [SyncVar(hook = "AssignTeam")]
-    private int team = -1;
+    private int team;
     private float Horizontal;
     private GameObject spawnLocation;
     private List<GameObject> Feet;
@@ -23,15 +23,26 @@ public class PlayerControl : NetworkBehaviour {
     private int doubleJumpIndex = 0;
     private GameObject held;
     private Vector3 heldPosition;
-    private bool FaceLeft;
+    //private bool FaceLeft;
     private bool isPickingBall;
-#endregion
+    private bool jumping = false;
+    #endregion
 
-#region Event Functions
+    #region Properties
+    public int Team
+    {
+        get
+        {
+            return team;
+        }
+    }
+    #endregion
+
+    #region Event Functions
     void Awake () {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _Trigger = GetComponentInChildren<PlayerTrigger>();
-        FaceLeft = false;
+        //FaceLeft = false;
         isPickingBall = false;
     }
 
@@ -50,33 +61,41 @@ public class PlayerControl : NetworkBehaviour {
         AssignTeam(team);
     }
 
+    private void Update ()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        /*Pick up Ball*/
+        if (Input.GetKeyDown(KeyCode.F))
+            PickUpball();
+
+        /*holding Ball*/
+        if (held != null)
+            CmdHoldBall(held, heldPosition);
+
+        if (Input.GetMouseButtonDown(0) && isPickingBall)
+            ThrowBall();
+
+        jumping = Input.GetKeyDown(KeyCode.Space);
+    }
+
     // Update is called once per frame
     void FixedUpdate () {
         /*Local Player*/
         if (!isLocalPlayer)
             return;
 
-        /*Pick up Ball*/
-        if (Input.GetKeyDown(KeyCode.F))
-            PickUpBall();
-
-        /*holding Ball*/
-        if (held != null)
-            HoldBall();
-
         /*Jump*/
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (jumping)
             Jump();
-
-        if (Input.GetMouseButtonDown(0) && isPickingBall)
-            held = ThrowBall();
 
         /*Player Movement*/
         Move();
-        if (FaceLeft)
+        //if (FaceLeft)
             heldPosition = transform.position + new Vector3(-0.5f, 0);
-        else
-            heldPosition = transform.position + new Vector3(0.5f, 0);
+        //else
+            //heldPosition = transform.position + new Vector3(0.5f, 0);
 	}
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -99,17 +118,17 @@ public class PlayerControl : NetworkBehaviour {
         if (ground.tag == "Ground" && Feet.Contains(ground))
             Feet.Remove(ground);
     }
-#endregion
+    #endregion
 
-#region Methods
+    #region Methods
     private void Move()
     {
         Horizontal = Input.GetAxis("Horizontal") * _speed;
         _rigidbody.velocity = new Vector2(Horizontal, _rigidbody.velocity.y);
-        if (Horizontal > 0)
+        /*if (Horizontal > 0)
             FaceLeft = false;
         if (Horizontal < 0)
-            FaceLeft = true;
+            FaceLeft = true;*/
     }
 
     private void Jump()
@@ -160,27 +179,47 @@ public class PlayerControl : NetworkBehaviour {
         AssignTeam(value);
     }
 
-    private void HoldBall()
+    [Command]
+    private void CmdHoldBall(GameObject g, Vector2 pos)
     {
-        held.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        held.transform.position = heldPosition;
+        g.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        g.GetComponent<Rigidbody2D>().MovePosition(pos);
     }
 
-    private void PickUpBall()
+    private void PickUpball()
     {
         isPickingBall = !isPickingBall;
         if (isPickingBall)
+        {
             held = _Trigger.GetBall();
+        }
         else held = null;
+        CmdPickUpBall(isPickingBall, held);
     }
-    private GameObject ThrowBall()
+
+    [Command]
+    private void CmdPickUpBall(bool pickBall, GameObject g)
     {
-         Vector2 MouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-         Vector2 direction = MouseInput - (Vector2)held.transform.position;
-         direction.Normalize();
-         held.GetComponent<Rigidbody2D>().velocity = direction * magnitude;
-         isPickingBall = !isPickingBall;
-         return null;
+        if (pickBall && g != null)
+        {
+            g.GetComponent<BallMovement>().SetAlive(true);
+        }
     }
-#endregion
+
+    private void ThrowBall()
+    {
+        Vector2 mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = mouseInput - (Vector2)held.transform.position;
+        direction.Normalize();
+        isPickingBall = !isPickingBall;
+        CmdThrowBall(held, direction * magnitude);
+        held = null;
+    }
+
+    [Command]
+    private void CmdThrowBall(GameObject g, Vector2 dir)
+    {
+        g.GetComponent<Rigidbody2D>().velocity = dir;
+    }
+    #endregion
 }
