@@ -26,10 +26,10 @@ public class PlayerTrigger : MonoBehaviour {
                     PickUp = g;
                 }
             }
-            Debug.Log("Min" + Min);
+            //Debug.Log("Min" + Min);
         }
         else PickUp = null;
-        Debug.Log("Pickup" + PickUp);
+       //Debug.Log("Pickup" + PickUp);
     }
 
     public GameObject GetBall()
@@ -43,7 +43,7 @@ public class PlayerTrigger : MonoBehaviour {
         if (collision.tag == "Ball" && !Balls.Contains(collision.gameObject))
         {
             Balls.Add(collision.gameObject);
-            Debug.Log("List B:" + Balls.Count);
+            //Debug.Log("List B:" + Balls.Count);
         }
     }
 
