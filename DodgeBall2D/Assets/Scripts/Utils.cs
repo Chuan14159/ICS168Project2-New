@@ -13,6 +13,15 @@ public static class Utils {
     {
         return NetworkServer.active;
     }
+
+    // Sets the anchors and zeroes out the sizes of a rect transform
+    public static void SetAnchors (this RectTransform rt, Vector2 min, Vector2 max)
+    {
+        rt.anchorMin = min;
+        rt.anchorMax = max;
+        rt.anchoredPosition = Vector2.zero;
+        rt.sizeDelta = Vector2.zero;
+    }
     #endregion
 
     #region Coroutines

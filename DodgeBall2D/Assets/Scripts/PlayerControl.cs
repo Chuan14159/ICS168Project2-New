@@ -14,7 +14,7 @@ public class PlayerControl : NetworkBehaviour {
     private SpriteRenderer _spriteRenderer;
     private PlayerTrigger _Trigger;
 
-    [SyncVar(hook = "OnTeamChange")]
+    [SyncVar(hook = "AssignTeam")]
     private int team = -1;
     private float Horizontal;
     private GameObject spawnLocation;
@@ -47,12 +47,11 @@ public class PlayerControl : NetworkBehaviour {
 
     public override void OnStartClient ()
     {
-        AssignColor();
+        AssignTeam(team);
     }
 
     // Update is called once per frame
     void FixedUpdate () {
-        //Debug.Log(team);
         /*Local Player*/
         if (!isLocalPlayer)
             return;
@@ -78,7 +77,7 @@ public class PlayerControl : NetworkBehaviour {
             heldPosition = transform.position + new Vector3(-0.5f, 0);
         else
             heldPosition = transform.position + new Vector3(0.5f, 0);
-    }
+	}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -89,7 +88,6 @@ public class PlayerControl : NetworkBehaviour {
         if (ground.tag == "Ground" && !Feet.Contains(ground))
             Feet.Add(ground);
         ResetDoubleJump();
-        //Debug.Log("Enter" + Feet.Count);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -100,7 +98,6 @@ public class PlayerControl : NetworkBehaviour {
         GameObject ground = collision.transform.gameObject;
         if (ground.tag == "Ground" && Feet.Contains(ground))
             Feet.Remove(ground);
-        //Debug.Log("Exit" + Feet.Count);
     }
 #endregion
 
@@ -142,10 +139,11 @@ public class PlayerControl : NetworkBehaviour {
         TeamSelection.instance.Player = this;
     }
 
-    public void AssignColor ()
+    public void AssignTeam (int value)
     {
-        gameObject.layer = team + 8;
-        switch (team)
+        team = value;
+        gameObject.layer = value + 8;
+        switch (value)
         {
             case 0:
                 _spriteRenderer.color = Color.red;
@@ -159,32 +157,7 @@ public class PlayerControl : NetworkBehaviour {
     [Command]
     public void CmdChooseTeam (int value)
     {
-        team = value;
-        gameObject.layer = value + 8;
-        switch (value)
-        {
-            case 0:
-                _spriteRenderer.color = Color.red;
-                break;
-            case 1:
-                _spriteRenderer.color = Color.blue;
-                break;
-        }
-    }
-
-    public void OnTeamChange (int value)
-    {
-        team = value;
-        gameObject.layer = value + 8;
-        switch (value)
-        {
-            case 0:
-                _spriteRenderer.color = Color.red;
-                break;
-            case 1:
-                _spriteRenderer.color = Color.blue;
-                break;
-        }
+        AssignTeam(value);
     }
 
     private void HoldBall()

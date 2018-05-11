@@ -7,6 +7,8 @@ public class DodgeballNetworkManager : NetworkManager {
     #region Attributes
     [SerializeField]
     private List<GameObject> balls;     // The balls to spawn
+    [SerializeField]
+    private GameObject timer;                // The timer
     #endregion
 
     #region Properties
@@ -17,7 +19,16 @@ public class DodgeballNetworkManager : NetworkManager {
     public override void OnStartServer()
     {
         base.OnStartServer();
-        StartCoroutine(Utils.DoAfter(SpawnBalls, Utils.ServerActive));
+        StartCoroutine(Utils.DoAfter(SpawnObjects, Utils.ServerActive));
+    }
+
+    public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
+    {
+        base.OnServerAddPlayer(conn, playerControllerId);
+        if (numPlayers >= matchSize)
+        {
+            timer.GetComponent<Timer>().StartTimer(300);
+        }
     }
 
     // Awake is called before Start
@@ -41,7 +52,7 @@ public class DodgeballNetworkManager : NetworkManager {
 	
 	#region Methods
 	// Spawn in the balls
-    private void SpawnBalls ()
+    private void SpawnObjects ()
     {
         foreach (GameObject g in balls)
         {
@@ -51,6 +62,7 @@ public class DodgeballNetworkManager : NetworkManager {
             GameObject l = Instantiate(g, new Vector3(-pos, 4), Quaternion.identity);
             NetworkServer.Spawn(l);
         }
+        NetworkServer.Spawn(timer);
     }
 	#endregion
 	
