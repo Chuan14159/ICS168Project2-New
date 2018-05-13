@@ -14,6 +14,9 @@ public class PlayerControl : NetworkBehaviour {
     private SpriteRenderer _spriteRenderer;
     private PlayerTrigger _Trigger;
 
+    public GameObject _pivot;
+    public GameObject heldPos;
+
     [SyncVar(hook = "AssignTeam")]
     private int team;
     [SyncVar(hook = "BeInvincible")]
@@ -54,8 +57,8 @@ public class PlayerControl : NetworkBehaviour {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _Trigger = GetComponentInChildren<PlayerTrigger>();
-        //FaceLeft = false;
         isPickingBall = false;
+        //FaceLeft = false;
     }
 
     public override void OnStartLocalPlayer ()
@@ -104,11 +107,13 @@ public class PlayerControl : NetworkBehaviour {
 
         /*Player Movement*/
         Move();
+        Aim();
+        heldPosition = new Vector3(heldPos.transform.position.x, heldPos.transform.position.y);
         //if (FaceLeft)
-            heldPosition = transform.position + new Vector3(-0.5f, 0);
+        //heldPosition = transform.position + new Vector3(-0.5f, 0);
         //else
-            //heldPosition = transform.position + new Vector3(0.5f, 0);
-	}
+        //heldPosition = transform.position + new Vector3(0.5f, 0);
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -151,6 +156,16 @@ public class PlayerControl : NetworkBehaviour {
             FaceLeft = true;*/
     }
 
+    private void Aim()
+    {
+        Vector3 mouse_pos = Input.mousePosition;
+        mouse_pos.z = -10f;
+        Vector3 playerPos = Camera.main.WorldToScreenPoint(_pivot.transform.position);
+        mouse_pos.x = mouse_pos.x - playerPos.x;
+        mouse_pos.y = mouse_pos.y - playerPos.y;
+        float angle = Mathf.Atan2(mouse_pos.x,mouse_pos.y) * Mathf.Rad2Deg;
+        _pivot.transform.rotation = Quaternion.Euler(new Vector3(0,0,-angle));
+    }
     private void Jump()
     {
         if (Feet.Count > 0 && doubleJumpIndex < doubleJump.Length && !doubleJump[doubleJumpIndex])
@@ -257,8 +272,8 @@ public class PlayerControl : NetworkBehaviour {
         Vector2 mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = mouseInput - (Vector2)held.transform.position;
         direction.Normalize();
-        isPickingBall = !isPickingBall;
         CmdThrowBall(held, direction * magnitude);
+        isPickingBall = !isPickingBall;
         held = null;
     }
 

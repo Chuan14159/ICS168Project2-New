@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Ball
   - Terrain
+  - PlayerPivot
+  - HoldPosition
   layers:
   - Default
   - TransparentFX
