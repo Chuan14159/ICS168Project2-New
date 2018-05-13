@@ -16,6 +16,9 @@ public class PlayerControl : NetworkBehaviour {
 
     [SyncVar(hook = "AssignTeam")]
     private int team;
+    [SyncVar(hook = "BeInvincible")]
+    private bool invincible;
+    private Coroutine flashRoutine;
     private float Horizontal;
     private GameObject spawnLocation;
     private List<GameObject> Feet;
@@ -36,11 +39,20 @@ public class PlayerControl : NetworkBehaviour {
             return team;
         }
     }
+
+    public bool Invincible
+    {
+        get
+        {
+            return invincible;
+        }
+    }
     #endregion
 
     #region Event Functions
     void Awake () {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         _Trigger = GetComponentInChildren<PlayerTrigger>();
         //FaceLeft = false;
         isPickingBall = false;
@@ -48,7 +60,6 @@ public class PlayerControl : NetworkBehaviour {
 
     public override void OnStartLocalPlayer ()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
@@ -59,6 +70,7 @@ public class PlayerControl : NetworkBehaviour {
     public override void OnStartClient ()
     {
         AssignTeam(team);
+        BeInvincible(invincible);
     }
 
     private void Update ()
@@ -100,13 +112,21 @@ public class PlayerControl : NetworkBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isLocalPlayer)
-            return;
-
-        GameObject ground = collision.transform.gameObject;
-        if (ground.tag == "Ground" && !Feet.Contains(ground))
-            Feet.Add(ground);
-        ResetDoubleJump();
+        if (isLocalPlayer)
+        {
+            GameObject ground = collision.transform.gameObject;
+            if ((ground.tag == "Ground" || ground.tag == "Terrain") && !Feet.Contains(ground))
+                Feet.Add(ground);
+            ResetDoubleJump();
+        }
+        if (isServer)
+        {
+            BallMovement b = collision.collider.GetComponent<BallMovement>();
+            if (b != null && b.Team != -1 && !invincible)
+            {
+                StartCoroutine(InvincibleTime(1f));
+            }
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -115,7 +135,7 @@ public class PlayerControl : NetworkBehaviour {
             return;
 
         GameObject ground = collision.transform.gameObject;
-        if (ground.tag == "Ground" && Feet.Contains(ground))
+        if ((ground.tag == "Ground" || ground.tag == "Terrain") && Feet.Contains(ground))
             Feet.Remove(ground);
     }
     #endregion
@@ -161,15 +181,31 @@ public class PlayerControl : NetworkBehaviour {
     public void AssignTeam (int value)
     {
         team = value;
-        gameObject.layer = value + 8;
+        gameObject.layer = value + 11;
         switch (value)
         {
             case 0:
                 _spriteRenderer.color = Color.red;
+                transform.position = new Vector3(-4, 4);
                 break;
             case 1:
                 _spriteRenderer.color = Color.blue;
+                transform.position = new Vector3(4, 4);
                 break;
+        }
+    }
+
+    private void BeInvincible (bool value)
+    {
+        invincible = value;
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            _spriteRenderer.color = _spriteRenderer.color.SetAlpha(1);
+        }
+        if (invincible)
+        {
+            flashRoutine = StartCoroutine(Flash());
         }
     }
 
@@ -182,8 +218,10 @@ public class PlayerControl : NetworkBehaviour {
     [Command]
     private void CmdHoldBall(GameObject g, Vector2 pos)
     {
-        g.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        g.GetComponent<Rigidbody2D>().MovePosition(pos);
+        Rigidbody2D r = g.GetComponent<Rigidbody2D>();
+        r.velocity = Vector2.zero;
+        r.MovePosition(pos);
+        g.GetComponent<BallMovement>().SetTeam(team);
     }
 
     private void PickUpball()
@@ -192,9 +230,13 @@ public class PlayerControl : NetworkBehaviour {
         if (isPickingBall)
         {
             held = _Trigger.GetBall();
+            CmdPickUpBall(isPickingBall, held);
         }
-        else held = null;
-        CmdPickUpBall(isPickingBall, held);
+        else
+        {
+            CmdPickUpBall(isPickingBall, held);
+            held = null;
+        }
     }
 
     [Command]
@@ -202,7 +244,11 @@ public class PlayerControl : NetworkBehaviour {
     {
         if (pickBall && g != null)
         {
-            g.GetComponent<BallMovement>().SetAlive(true);
+            g.GetComponent<BallMovement>().SetTeam(team);
+        }
+        else if (!pickBall && g != null)
+        {
+            g.GetComponent<BallMovement>().SetTeam(-1);
         }
     }
 
@@ -220,6 +266,34 @@ public class PlayerControl : NetworkBehaviour {
     private void CmdThrowBall(GameObject g, Vector2 dir)
     {
         g.GetComponent<Rigidbody2D>().velocity = dir;
+        g.GetComponent<BallMovement>().StartExpire(2);
+    }
+    #endregion
+
+    #region Coroutines
+    private IEnumerator InvincibleTime(float time)
+    {
+        yield return null;
+        BeInvincible(true);
+        yield return new WaitForSeconds(time);
+        BeInvincible(false);
+    }
+
+    private IEnumerator Flash()
+    {
+        while (true)
+        {
+            for (float t = 0f; t < 0.1f; t += Time.deltaTime)
+            {
+                _spriteRenderer.color = _spriteRenderer.color.SetAlpha(1f - (t / 0.1f));
+                yield return null;
+            }
+            for (float t = 0f; t < 0.1f; t += Time.deltaTime)
+            {
+                _spriteRenderer.color = _spriteRenderer.color.SetAlpha(t / 0.1f);
+                yield return null;
+            }
+        }
     }
     #endregion
 }

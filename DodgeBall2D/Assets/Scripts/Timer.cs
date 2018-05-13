@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 
 public class Timer : NetworkBehaviour {
     #region Attributes
+    public Task after;              // What to do when the timer expires
+    [SerializeField]
+    private int time;               // The time to set for the timer
     [SerializeField]
     private Text text;              // The text to show the time
     private Coroutine routine;      // The current timer routine
@@ -33,7 +36,7 @@ public class Timer : NetworkBehaviour {
 	// Use this for initialization
 	private void Start () 
 	{
-		
+        after = Scoreboard.instance.DeclareWinner;
 	}
 	
 	// Update is called once per frame
@@ -45,13 +48,13 @@ public class Timer : NetworkBehaviour {
 	
 	#region Methods
 	// Start a timer and stop the other one
-    public void StartTimer (int sec)
+    public void StartTimer ()
     {
         if (routine != null)
         {
             StopCoroutine(routine);
         }
-        routine = StartCoroutine(TimeRoutine(sec));
+        routine = StartCoroutine(TimeRoutine(time));
     }
 
     // Set the seconds
@@ -74,6 +77,10 @@ public class Timer : NetworkBehaviour {
         {
             yield return new WaitForSeconds(1);
             SetSeconds(seconds - 1);
+        }
+        if (after != null)
+        {
+            after();
         }
     }
 	#endregion

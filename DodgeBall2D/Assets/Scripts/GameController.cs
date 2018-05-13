@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour {
 	#endregion
 	
 	#region Methods
-	
+
 	#endregion
 	
 	#region Coroutines

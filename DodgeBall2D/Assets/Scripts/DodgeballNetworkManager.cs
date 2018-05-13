@@ -27,8 +27,10 @@ public class DodgeballNetworkManager : NetworkManager {
         base.OnServerAddPlayer(conn, playerControllerId);
         if (numPlayers >= matchSize)
         {
-            gameInfo.GetComponent<Timer>().StartTimer(300);
-            gameInfo.GetComponent<Scoreboard>().ResetScores();
+            Scoreboard s = gameInfo.GetComponent<Scoreboard>();
+            gameInfo.GetComponent<Timer>().StartTimer();
+            s.ResetScores();
+            s.SetWin("");
         }
     }
 
@@ -63,7 +65,6 @@ public class DodgeballNetworkManager : NetworkManager {
             GameObject l = Instantiate(g, new Vector3(-pos, 4), Quaternion.identity);
             NetworkServer.Spawn(l);
         }
-        //NetworkServer.Spawn(timer);
     }
 	#endregion
 	

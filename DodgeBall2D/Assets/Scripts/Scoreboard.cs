@@ -13,10 +13,14 @@ public class Scoreboard : NetworkBehaviour {
     private Text scoreDisplay1;         // The score1 display
     [SerializeField]
     private Text scoreDisplay2;         // The score2 display
+    [SerializeField]
+    private Text winDisplay;            // The win screen display
     [SyncVar(hook = "SetScore1")]
     private int score1;                 // The first score
     [SyncVar(hook = "SetScore2")]
     private int score2;                 // The second score
+    [SyncVar(hook = "SetWin")]
+    private string winText;             // The text on the win screen
     #endregion
 
     #region Properties
@@ -46,6 +50,26 @@ public class Scoreboard : NetworkBehaviour {
             return score1 >= scoreLimit || score2 >= scoreLimit;
         }
     }
+
+    // Return the team in the lead, or -1 if tied
+    public int WinningTeam
+    {
+        get
+        {
+            if (score1 > score2)
+            {
+                return 0;
+            }
+            else if (score1 < score2)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
     #endregion
 
     #region Event Functions
@@ -54,6 +78,7 @@ public class Scoreboard : NetworkBehaviour {
         base.OnStartClient();
         SetScore1(score1);
         SetScore2(score2);
+        SetWin(winText);
     }
 
     // Awake is called before Start
@@ -98,6 +123,10 @@ public class Scoreboard : NetworkBehaviour {
         {
             scoreDisplay1.text = string.Format("{0:00}", score1);
         }
+        if (GameOver)
+        {
+            DeclareWinner();
+        }
     }
 
     // Set the second score
@@ -106,7 +135,35 @@ public class Scoreboard : NetworkBehaviour {
         score2 = value;
         if (scoreDisplay2 != null)
         {
-            scoreDisplay2.text = string.Format("{0:00}", score1);
+            scoreDisplay2.text = string.Format("{0:00}", score2);
+        }
+        if (GameOver)
+        {
+            DeclareWinner();
+        }
+    }
+
+    // Set the win text
+    public void SetWin (string value)
+    {
+        winText = value;
+        winDisplay.text = value;
+    }
+
+    // Declare the winner
+    public void DeclareWinner ()
+    {
+        switch (WinningTeam)
+        {
+            case -1:
+                SetWin("DRAW");
+                break;
+            case 0:
+                SetWin("RED TEAM WINS");
+                break;
+            case 1:
+                SetWin("BLUE TEAM WINS");
+                break;
         }
     }
     #endregion

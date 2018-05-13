@@ -22,6 +22,12 @@ public static class Utils {
         rt.anchoredPosition = Vector2.zero;
         rt.sizeDelta = Vector2.zero;
     }
+
+    // Returns a color with a different alpha
+    public static Color SetAlpha (this Color c, float value)
+    {
+        return new Color(c.r, c.g, c.b, value);
+    }
     #endregion
 
     #region Coroutines
