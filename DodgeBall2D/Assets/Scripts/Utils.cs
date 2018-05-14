@@ -31,7 +31,7 @@ public static class Utils {
     #endregion
 
     #region Coroutines
-    // Waits until a condition is met then does something
+    // Waits until a condition is met then does a task
     public static IEnumerator DoAfter (Task task, Condition condition)
     {
         while (!condition())

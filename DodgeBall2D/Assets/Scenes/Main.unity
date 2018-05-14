@@ -223,9 +223,15 @@ Prefab:
     - target: {fileID: 114044785827572784, guid: 99cc9ba45669eb048aa7e30b21260b35,
         type: 2}
       propertyPath: time
-      value: 10
+      value: 180
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114049468414662342, guid: 99cc9ba45669eb048aa7e30b21260b35,
+        type: 2}
+      propertyPath: scoreLimit
+      value: 99999
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114240164895775394, guid: 99cc9ba45669eb048aa7e30b21260b35, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 99cc9ba45669eb048aa7e30b21260b35, type: 2}
   m_IsPrefabParent: 0
 --- !u!224 &889109300 stripped
@@ -505,7 +511,7 @@ MonoBehaviour:
   m_MatchHost: mm.unet.unity3d.com
   m_MatchPort: 443
   matchName: default
-  matchSize: 2
+  matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   balls:
@@ -685,6 +691,7 @@ GameObject:
   - component: {fileID: 1717214261}
   - component: {fileID: 1717214260}
   - component: {fileID: 1717214262}
+  - component: {fileID: 1717214263}
   m_Layer: 5
   m_Name: WinText
   m_TagString: Untagged
@@ -781,6 +788,20 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &1717214263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1717214258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b169a6ab7c2fbf4d92a15596efada3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 1717214259}
+  minAnchor: {x: 0.1, y: 0.1}
+  maxAnchor: {x: 0.9, y: 0.8}
 --- !u!1 &2017833599
 GameObject:
   m_ObjectHideFlags: 0
