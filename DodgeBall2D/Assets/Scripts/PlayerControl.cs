@@ -269,6 +269,8 @@ public class PlayerControl : NetworkBehaviour {
 
     private void ThrowBall()
     {
+        if (held == null)
+            return;
         Vector2 mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = mouseInput - (Vector2)held.transform.position;
         direction.Normalize();
