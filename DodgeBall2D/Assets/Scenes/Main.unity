@@ -443,7 +443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
-  m_ServerBindAddress: 
+  m_ServerBindAddress: localhost
   m_NetworkAddress: localhost
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_SpawnPrefabs:
   - {fileID: 0}
   - {fileID: 1165868548797250, guid: 0a1058245a41be84999ef7f24ae8ba4a, type: 2}
-  m_CustomConfig: 0
+  m_CustomConfig: 1
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1440
@@ -501,7 +501,7 @@ MonoBehaviour:
     m_MaxTimerTimeout: 12000
     m_MinNetSimulatorTimeout: 1
     m_MaxNetSimulatorTimeout: 12000
-  m_Channels: 
+  m_Channels: 0500000000000000
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_MatchHost: mm.unet.unity3d.com
   m_MatchPort: 443
   matchName: default
-  matchSize: 4
+  matchSize: 2
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   balls:
