@@ -9,6 +9,8 @@ public class BallMovement : NetworkBehaviour {
     private Coroutine expireRoutine;        // The expiration routine
     [SyncVar(hook = "SetTeam")]
     private int team = -1;                  // The team that owns the ball
+    private int movementType;
+    public ParticleSystem[] particles = new ParticleSystem[2];
 
     // Returns team
     public int Team
@@ -21,6 +23,7 @@ public class BallMovement : NetworkBehaviour {
 
     public override void OnStartClient ()
     {
+        SetMovementType();
         SetTeam(team);
     }
 
@@ -29,6 +32,53 @@ public class BallMovement : NetworkBehaviour {
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
 	}
+
+    // Sets the type of movement that the ball has
+    void SetMovementType()
+    {
+        movementType = Random.Range(0, 3);
+        if ( movementType == 1 ){
+            ParticleSystem p = Instantiate(particles[0], this.transform);
+            p.transform.parent = this.transform;
+        } else if ( movementType == 2 ){
+            ParticleSystem p = Instantiate(particles[1], this.transform);
+            p.transform.parent = this.transform;
+        }
+    }
+
+    public int GetMovementType(){
+        return movementType;
+    }
+
+    public void moveSerpentine(Vector2 dir){
+        transform.GetComponent<Rigidbody2D>().velocity = dir/2;
+        StartCoroutine(serpentine());
+        StartExpire(2);
+    }
+
+    public void moveCharge(Vector2 dir){
+        StartCoroutine(charge(dir));
+        StartExpire(2);
+    }
+
+
+    private IEnumerator serpentine(){
+        for (int i = 0; i < 10; i++ )
+        {
+            yield return new WaitForSeconds(0.1f);
+            transform.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 500.0f * Mathf.Pow(-1, i));
+        }
+    }
+
+
+    private IEnumerator charge(Vector2 dir){
+        for (int i = 10; i > 0; i--)
+        {
+            transform.GetComponent<Rigidbody2D>().velocity = dir / i;
+            yield return new WaitForSeconds(0.07f);
+        }
+    }
+
 
     // Update is called once per frame
     void Update ()
@@ -69,7 +119,7 @@ public class BallMovement : NetworkBehaviour {
         PlayerControl p = collision.collider.GetComponent<PlayerControl>();
         if (p != null)
         {
-            Debug.Log(p.Invincible);
+            //Debug.Log(p.Invincible);
         }
         if (collision.collider.CompareTag("Player") && team != -1 && !p.Invincible)
         {

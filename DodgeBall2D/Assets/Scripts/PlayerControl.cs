@@ -282,8 +282,20 @@ public class PlayerControl : NetworkBehaviour {
     [Command]
     private void CmdThrowBall(GameObject g, Vector2 dir)
     {
-        g.GetComponent<Rigidbody2D>().velocity = dir;
-        g.GetComponent<BallMovement>().StartExpire(2);
+        int m = g.GetComponent<BallMovement>().GetMovementType();
+        if (m == 0)
+        {
+            g.GetComponent<Rigidbody2D>().velocity = dir;
+            g.GetComponent<BallMovement>().StartExpire(2);
+        }
+        else if (m == 1)
+        {
+            g.GetComponent<BallMovement>().moveSerpentine(dir);
+        } 
+        else if ( m == 2)
+        {
+            g.GetComponent<BallMovement>().moveCharge(dir);
+        }
     }
     #endregion
 
