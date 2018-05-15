@@ -132,9 +132,9 @@ public class BallMovement : NetworkBehaviour {
                 Scoreboard.instance.SetScore1(Scoreboard.instance.Score1 + 1);
             }
         }
-        else if (collision.collider.CompareTag("Floor"))
+        else if (collision.collider.CompareTag("Ground"))
         {
-            SetTeam(-1);
+            //SetTeam(-1);
         }
     }
 
