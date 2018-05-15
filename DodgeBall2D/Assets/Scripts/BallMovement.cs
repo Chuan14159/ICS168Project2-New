@@ -58,7 +58,7 @@ public class BallMovement : NetworkBehaviour {
 
     public void moveCharge(Vector2 dir){
         StartCoroutine(charge(dir));
-        StartExpire(2);
+        StartExpire(3);
     }
 
 
@@ -132,7 +132,7 @@ public class BallMovement : NetworkBehaviour {
                 Scoreboard.instance.SetScore1(Scoreboard.instance.Score1 + 1);
             }
         }
-        else if (collision.collider.CompareTag("Ground"))
+        else if (collision.collider.CompareTag("Floor"))
         {
             SetTeam(-1);
         }

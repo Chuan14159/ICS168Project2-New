@@ -121,7 +121,7 @@ public class Scoreboard : NetworkBehaviour {
         score1 = value;
         if (scoreDisplay1 != null)
         {
-            scoreDisplay1.text = string.Format("{0:00}", score1);
+            scoreDisplay1.text = string.Format("\n\n\n {0:00}", score1);
         }
         if (GameOver)
         {
@@ -135,7 +135,7 @@ public class Scoreboard : NetworkBehaviour {
         score2 = value;
         if (scoreDisplay2 != null)
         {
-            scoreDisplay2.text = string.Format("{0:00}", score2);
+            scoreDisplay2.text = string.Format("\n\n\n {0:00}", score2);
         }
         if (GameOver)
         {

@@ -63,7 +63,7 @@ public class Timer : NetworkBehaviour {
         seconds = sec;
         if (text != null)
         {
-            text.text = string.Format("{0}:{1:00}", seconds / 60, seconds % 60);
+            text.text = string.Format("0{0}:{1:00}", seconds / 60, seconds % 60);
         }
     }
 	#endregion

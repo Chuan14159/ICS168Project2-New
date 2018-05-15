@@ -296,6 +296,7 @@ public class PlayerControl : NetworkBehaviour {
         {
             g.GetComponent<BallMovement>().moveCharge(dir);
         }
+
     }
     #endregion
 
