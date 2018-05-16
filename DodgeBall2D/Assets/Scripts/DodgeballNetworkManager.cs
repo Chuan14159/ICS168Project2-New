@@ -6,9 +6,11 @@ using UnityEngine.Networking;
 public class DodgeballNetworkManager : NetworkManager {
     #region Attributes
     [SerializeField]
-    private List<GameObject> balls;     // The balls to spawn
+    private GameObject preMatch;    // The objects to only enable before the server starts
     [SerializeField]
-    private GameObject gameInfo;        // All of the game's numbers         
+    private List<GameObject> balls; // The balls to spawn
+    [SerializeField]
+    private GameObject gameInfo;    // All of the game's numbers         
     #endregion
 
     #region Properties
@@ -16,10 +18,17 @@ public class DodgeballNetworkManager : NetworkManager {
     #endregion
 
     #region Event Functions
-    public override void OnStartServer()
+    public override void OnStartServer ()
     {
         base.OnStartServer();
+        preMatch.SetActive(false);
         StartCoroutine(Utils.DoAfter(SpawnObjects, Utils.ServerActive));
+    }
+
+    public override void OnStopServer ()
+    {
+        base.OnStopServer();
+        preMatch.SetActive(true);
     }
 
     public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
@@ -65,6 +74,12 @@ public class DodgeballNetworkManager : NetworkManager {
             GameObject l = Instantiate(g, new Vector3(-pos, 4), Quaternion.identity);
             NetworkServer.Spawn(l);
         }
+    }
+
+    // Set the number of players in the match with a string
+    public void SetMaxPlayers (string input)
+    {
+        matchSize = uint.Parse(input);
     }
 	#endregion
 	
