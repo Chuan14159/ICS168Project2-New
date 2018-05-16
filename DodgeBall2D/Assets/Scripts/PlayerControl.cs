@@ -16,6 +16,7 @@ public class PlayerControl : NetworkBehaviour {
 
     public GameObject _pivot;
     public GameObject heldPos;
+    public GameObject localPlayerIndicator;
 
     [SyncVar(hook = "AssignTeam")]
     private int team;
@@ -93,6 +94,7 @@ public class PlayerControl : NetworkBehaviour {
             ThrowBall();
 
         jumping = Input.GetKeyDown(KeyCode.Space);
+        localPlayerIndicator.transform.position = transform.position + Vector3.up/2;
     }
 
     // Update is called once per frame
@@ -245,11 +247,15 @@ public class PlayerControl : NetworkBehaviour {
         if (isPickingBall)
         {
             held = _Trigger.GetBall();
+            if(held != null)
+                held.GetComponent<Collider2D>().enabled = false;
             CmdPickUpBall(isPickingBall, held);
         }
         else
         {
             CmdPickUpBall(isPickingBall, held);
+            if (held != null)
+                held.GetComponent<Collider2D>().enabled = true;
             held = null;
         }
     }
@@ -271,6 +277,7 @@ public class PlayerControl : NetworkBehaviour {
     {
         if (held == null)
             return;
+        held.GetComponent<Collider2D>().enabled = true;
         Vector2 mouseInput = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 direction = mouseInput - (Vector2)held.transform.position;
         direction.Normalize();

@@ -152,129 +152,28 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1044220382282112, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
+    - target: {fileID: 212780774597284692, guid: 0f17d6807985e554bb33bc08c9ef21b2,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1097220294570692, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
+    - target: {fileID: 1721601447665356, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1570135538318914, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
+    - target: {fileID: 1022818627578656, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1563711609622116, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
+    - target: {fileID: 114259911188923702, guid: 0f17d6807985e554bb33bc08c9ef21b2,
+        type: 2}
+      propertyPath: magnitute
+      value: 17
       objectReference: {fileID: 0}
-    - target: {fileID: 1332939757563388, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 1806223562347322, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
-    - target: {fileID: 1463890751601902, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1809619213810526, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1371945903326564, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1817513989454740, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1739366186950764, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1672701331779144, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1538834226562170, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608761130701744, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1706016596324098, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1067756507764638, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1799832076920916, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904645932860216, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1199888533284892, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101688405559350, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1654742958298456, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1681001167434390, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1903852794809060, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1945254790976208, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1940198637957278, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1917851752793214, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1327798353360520, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1006699688262342, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1846898148621390, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1822310911174668, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Terrain
-      objectReference: {fileID: 0}
-    - target: {fileID: 1571061024865304, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
-      propertyPath: m_TagString
-      value: Ground
+    - target: {fileID: 114549169043998608, guid: 0f17d6807985e554bb33bc08c9ef21b2,
+        type: 2}
+      propertyPath: magnitute
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0f17d6807985e554bb33bc08c9ef21b2, type: 2}
@@ -840,7 +739,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.5618781, g: 0.3663495, b: 0.64705884, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
