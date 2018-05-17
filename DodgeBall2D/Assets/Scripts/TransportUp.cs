@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TransportUp : MonoBehaviour {
 
+    public float magnitute;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -21,7 +23,7 @@ public class TransportUp : MonoBehaviour {
         {
             Rigidbody2D rb = o.GetComponent<Rigidbody2D>();
 
-            rb.AddForce(Vector2.up * 24.0f);
+            rb.AddForce(Vector2.up * magnitute);
         }
 
     }
