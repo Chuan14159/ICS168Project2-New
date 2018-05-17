@@ -25,9 +25,21 @@ public class DodgeballNetworkManager : NetworkManager {
         StartCoroutine(Utils.DoAfter(SpawnObjects, Utils.ServerActive));
     }
 
+    public override void OnStartClient (NetworkClient client)
+    {
+        base.OnStartClient(client);
+        preMatch.SetActive(false);
+    }
+
     public override void OnStopServer ()
     {
         base.OnStopServer();
+        preMatch.SetActive(true);
+    }
+
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
         preMatch.SetActive(true);
     }
 

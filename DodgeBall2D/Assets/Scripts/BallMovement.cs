@@ -6,9 +6,11 @@ using UnityEngine.Networking;
 public class BallMovement : NetworkBehaviour {
 
     private SpriteRenderer _spriteRenderer; // The Sprite Renderer component attached
+    private ParticleSystem _particleSystem; // The Particle System component used
     private Coroutine expireRoutine;        // The expiration routine
     [SyncVar(hook = "SetTeam")]
     private int team = -1;                  // The team that owns the ball
+    [SyncVar(hook = "SetMovementType")]
     private int movementType;
     public ParticleSystem[] particles = new ParticleSystem[2];
 
@@ -21,29 +23,32 @@ public class BallMovement : NetworkBehaviour {
         }
     }
 
+    public override void OnStartServer ()
+    {
+        base.OnStartServer();
+        SetMovementType(Random.Range(0, particles.Length));
+    }
+
     public override void OnStartClient ()
     {
-        SetMovementType();
+        base.OnStartClient();
         SetTeam(team);
+        SetMovementType(movementType);
     }
 
     // Use this for initialization
     void Awake ()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _particleSystem = GetComponent<ParticleSystem>();
 	}
 
     // Sets the type of movement that the ball has
-    void SetMovementType()
+    void SetMovementType (int value)
     {
-        movementType = Random.Range(0, 3);
-        if ( movementType == 1 ){
-            ParticleSystem p = Instantiate(particles[0], this.transform);
-            p.transform.parent = this.transform;
-        } else if ( movementType == 2 ){
-            ParticleSystem p = Instantiate(particles[1], this.transform);
-            p.transform.parent = this.transform;
-        }
+        movementType = value;
+        ParticleSystem.MainModule m = _particleSystem.main;
+        m.startColor = particles[movementType].main.startColor;
     }
 
     public int GetMovementType(){

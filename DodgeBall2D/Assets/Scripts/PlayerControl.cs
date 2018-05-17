@@ -63,6 +63,7 @@ public class PlayerControl : NetworkBehaviour {
 
     public override void OnStartLocalPlayer ()
     {
+        base.OnStartLocalPlayer();
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
@@ -72,6 +73,7 @@ public class PlayerControl : NetworkBehaviour {
 
     public override void OnStartClient ()
     {
+        base.OnStartClient();
         AssignTeam(team);
         BeInvincible(invincible);
     }
