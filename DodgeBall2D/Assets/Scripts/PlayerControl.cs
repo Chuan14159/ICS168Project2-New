@@ -65,6 +65,7 @@ public class PlayerControl : NetworkBehaviour {
     public override void OnStartLocalPlayer ()
     {
         base.OnStartLocalPlayer();
+        localPlayerIndicator.SetActive(true);
         spawnLocation = GameObject.FindGameObjectWithTag("SpawnLocation");
         transform.position = spawnLocation.transform.position;
         Horizontal = spawnLocation.transform.position.x;
