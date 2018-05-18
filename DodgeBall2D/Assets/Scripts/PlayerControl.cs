@@ -241,7 +241,6 @@ public class PlayerControl : NetworkBehaviour {
         Rigidbody2D r = g.GetComponent<Rigidbody2D>();
         r.velocity = Vector2.zero;
         r.MovePosition(pos);
-        g.GetComponent<BallMovement>().SetTeam(team);
     }
 
     private void PickUpball()
@@ -268,11 +267,11 @@ public class PlayerControl : NetworkBehaviour {
     {
         if (pickBall && g != null)
         {
-            g.GetComponent<BallMovement>().SetTeam(team);
+            g.GetComponent<BallMovement>().PickUp(team);
         }
         else if (!pickBall && g != null)
         {
-            g.GetComponent<BallMovement>().SetTeam(-1);
+            g.GetComponent<BallMovement>().Drop();
         }
     }
 
@@ -292,21 +291,21 @@ public class PlayerControl : NetworkBehaviour {
     [Command]
     private void CmdThrowBall(GameObject g, Vector2 dir)
     {
-        int m = g.GetComponent<BallMovement>().GetMovementType();
+        BallMovement b = g.GetComponent<BallMovement>();
+        int m = b.GetMovementType();
+        b.Drop();
         if (m == 0)
         {
             g.GetComponent<Rigidbody2D>().velocity = dir;
-            g.GetComponent<BallMovement>().StartExpire(2);
         }
         else if (m == 1)
         {
-            g.GetComponent<BallMovement>().moveSerpentine(dir);
+            b.moveSerpentine(dir);
         } 
         else if ( m == 2)
         {
-            g.GetComponent<BallMovement>().moveCharge(dir);
+            b.moveCharge(dir);
         }
-
     }
     #endregion
 

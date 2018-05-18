@@ -10,6 +10,8 @@ public class BallMovement : NetworkBehaviour {
     private Coroutine expireRoutine;        // The expiration routine
     [SyncVar(hook = "SetTeam")]
     private int team = -1;                  // The team that owns the ball
+    [SyncVar(hook = "SetPickup")]
+    private bool pickedUp = false;          // Whether the ball is picked up
     [SyncVar(hook = "SetMovementType")]
     private int movementType;
     public ParticleSystem[] particles = new ParticleSystem[2];
@@ -33,6 +35,7 @@ public class BallMovement : NetworkBehaviour {
     {
         base.OnStartClient();
         SetTeam(team);
+        SetPickup(pickedUp);
         SetMovementType(movementType);
     }
 
@@ -114,6 +117,32 @@ public class BallMovement : NetworkBehaviour {
                 gameObject.layer = 9;
                 break;
         }
+    }
+
+    // Set the pickup status of the object
+    public void SetPickup (bool value)
+    {
+        pickedUp = value;
+        if (pickedUp)
+        {
+            gameObject.layer = 13;
+        }
+        else
+        {
+            SetTeam(team);
+        }
+    }
+
+    public void PickUp (int team)
+    {
+        SetTeam(team);
+        SetPickup(true);
+    }
+
+    public void Drop ()
+    {
+        SetPickup(false);
+        StartExpire(2);
     }
 
     private void OnCollisionEnter2D (Collision2D collision)
