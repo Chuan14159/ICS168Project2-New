@@ -13,6 +13,7 @@ public class PlayerControl : NetworkBehaviour {
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _spriteRenderer;
     private PlayerTrigger _Trigger;
+    private Animator _animator;
 
     public GameObject _pivot;
     public GameObject heldPos;
@@ -59,6 +60,8 @@ public class PlayerControl : NetworkBehaviour {
         _rigidbody = GetComponent<Rigidbody2D>();
         _Trigger = GetComponentInChildren<PlayerTrigger>();
         isPickingBall = false;
+        localPlayerIndicator.transform.localScale = gameObject.transform.localScale * 4;
+        _animator = GetComponent<Animator>();
         //FaceLeft = false;
     }
 
@@ -96,7 +99,7 @@ public class PlayerControl : NetworkBehaviour {
         if (Input.GetMouseButtonDown(0) && isPickingBall)
             ThrowBall();
 
-        jumping = Input.GetKeyDown(KeyCode.Space);
+        //jumping = Input.GetKeyDown(KeyCode.Space);
         localPlayerIndicator.transform.position = transform.position + Vector3.up/2;
     }
 
@@ -107,13 +110,14 @@ public class PlayerControl : NetworkBehaviour {
             return;
 
         /*Jump*/
-        if (jumping)
+        if (Input.GetKeyDown(KeyCode.Space))
             Jump();
 
         /*Player Movement*/
         Move();
         Aim();
         heldPosition = new Vector3(heldPos.transform.position.x, heldPos.transform.position.y);
+        _animator.SetFloat("TurnLeft", Horizontal);
         //if (FaceLeft)
         //heldPosition = transform.position + new Vector3(-0.5f, 0);
         //else
@@ -125,9 +129,12 @@ public class PlayerControl : NetworkBehaviour {
         if (isLocalPlayer)
         {
             GameObject ground = collision.transform.gameObject;
-            if ((ground.tag == "Ground" || ground.tag == "Terrain") && !Feet.Contains(ground))
-                Feet.Add(ground);
-            ResetDoubleJump();
+            if (ground.tag == "Ground" || ground.tag == "Terrain")
+            {
+                ResetDoubleJump();
+                if (!Feet.Contains(ground))
+                    Feet.Add(ground);
+            }
         }
         if (isServer)
         {
@@ -146,7 +153,10 @@ public class PlayerControl : NetworkBehaviour {
 
         GameObject ground = collision.transform.gameObject;
         if ((ground.tag == "Ground" || ground.tag == "Terrain") && Feet.Contains(ground))
+        {
             Feet.Remove(ground);
+            _animator.SetBool("isJumping", true);
+        }
     }
     #endregion
 
@@ -155,10 +165,6 @@ public class PlayerControl : NetworkBehaviour {
     {
         Horizontal = Input.GetAxis("Horizontal") * _speed;
         _rigidbody.velocity = new Vector2(Horizontal, _rigidbody.velocity.y);
-        /*if (Horizontal > 0)
-            FaceLeft = false;
-        if (Horizontal < 0)
-            FaceLeft = true;*/
     }
 
     private void Aim()
@@ -173,6 +179,7 @@ public class PlayerControl : NetworkBehaviour {
     }
     private void Jump()
     {
+        _animator.SetBool("isJumping", true);
         if (Feet.Count > 0 && doubleJumpIndex < doubleJump.Length && !doubleJump[doubleJumpIndex])
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, high);
@@ -190,6 +197,7 @@ public class PlayerControl : NetworkBehaviour {
         doubleJump[0] = false;
         doubleJump[1] = true;
         doubleJumpIndex = 0;
+        _animator.SetBool("isJumping", false);
     }
 
     public void GiveChoice ()

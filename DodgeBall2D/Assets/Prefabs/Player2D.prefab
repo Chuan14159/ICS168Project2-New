@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 50340037062404670}
   - component: {fileID: 212983186951161878}
   - component: {fileID: 61956390390926222}
+  - component: {fileID: 95420839867339356}
+  - component: {fileID: 114775542649222040}
   m_Layer: 0
   m_Name: Player2D
   m_TagString: Player
@@ -142,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 1235417829563690}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.3}
   m_Children:
   - {fileID: 4326813048432330}
   - {fileID: 4922255362468586}
@@ -217,7 +219,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1235417829563690}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 54089224f392c0b42b063c7ec2a11018, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -234,6 +236,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &95420839867339356
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1235417829563690}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d0a0a5deb6e5d89438a0e91076ae7981, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114059218778236624
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -315,6 +334,25 @@ MonoBehaviour:
   m_SnapThreshold: 1
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114775542649222040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1235417829563690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1590678366, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 95420839867339356}
+  m_ParameterSendBits: 3
+  param0: 
+  param1: 
+  param2: 
+  param3: 
+  param4: 
+  param5: 
 --- !u!212 &212583078765422558
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -393,7 +431,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2831544469b7d6b4bb0528a0f9cd895e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e44f90c76c4623d4e8908765e6172b19, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
