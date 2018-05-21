@@ -148,18 +148,21 @@ public class PlayerControl : NetworkBehaviour {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (isServer)
+        dividerAlpha divider = collision.transform.gameObject.GetComponent<dividerAlpha>();
+        if (divider != null)
         {
-            dividerAlpha divider = collision.transform.gameObject.GetComponent<dividerAlpha>();
-            if (divider != null)
-            {
-                divider.show = true;
-            }
+            divider.show = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        dividerAlpha divider = collision.transform.gameObject.GetComponent<dividerAlpha>();
+        if (divider != null)
+        {
+            divider.show = false;
+        }
+
         if (!isLocalPlayer)
             return;
 
@@ -168,15 +171,6 @@ public class PlayerControl : NetworkBehaviour {
         {
             Feet.Remove(ground);
             _animator.SetBool("isJumping", true);
-        }
-
-        if (isServer)
-        {
-            dividerAlpha divider = collision.transform.gameObject.GetComponent<dividerAlpha>();
-            if (divider != null)
-            {
-                divider.show = false;
-            }
         }
     }
     #endregion
