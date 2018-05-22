@@ -228,11 +228,11 @@ public class PlayerControl : NetworkBehaviour {
         switch (value)
         {
             case 0:
-                _spriteRenderer.color = Color.red;
+                _spriteRenderer.color = new Color(1, 0.3f, 0);
                 transform.position = new Vector3(-4, 4);
                 break;
             case 1:
-                _spriteRenderer.color = Color.blue;
+                _spriteRenderer.color = new Color(0, 0.6f, 1);
                 transform.position = new Vector3(4, 4);
                 break;
         }

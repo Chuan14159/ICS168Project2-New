@@ -13,7 +13,7 @@ public class Timer : NetworkBehaviour {
     private Text text;              // The text to show the time
     private Coroutine routine;      // The current timer routine
     [SyncVar(hook = "SetSeconds")]
-    private int seconds;            // The time left in seconds
+    public int seconds;            // The time left in seconds
     #endregion
 
     #region Properties
