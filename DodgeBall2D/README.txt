@@ -18,4 +18,5 @@ Mechanics:
 	Move cursor will aim at the direction you want to throw.
 	Double jump is a fun mechanic to dodge incoming projectile.
 	
+Full Build is in FinalBuild folder, the name of it is Playtest.
 	
